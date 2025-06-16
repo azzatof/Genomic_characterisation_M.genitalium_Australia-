@@ -1,0 +1,1 @@
+# Genomic_characterisation_M.genitalium_Australia-

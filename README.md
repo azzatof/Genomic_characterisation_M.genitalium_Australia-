@@ -1,1 +1,1 @@
-# Genomic_characterisation_M.genitalium_Australia-
+# Genomic characterisation of *Mycoplasma genitalium* in Victoria, Australia, reveals lineage diversification and drivers of antimicrobial resistance

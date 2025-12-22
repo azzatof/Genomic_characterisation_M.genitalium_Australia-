@@ -79,6 +79,26 @@ for dir in */ ; do
     cd ..
 done
 ```
+### 4. Kraken
+Mapped paired end reads for each genome were input into kraken2 (v2.12 using the Plus PF database):
+
+```
+kraken2 --db /path/to/KRAKEN2/PLUSPF --gzip-compressed --paired <path/to/smapleID_mapped_R1.fastq.gz> <path/to/sampleID_mapped_R2.fastq.gz> --report <sampleID_report_.txt>
+```
+Top species match and percentage were extrated from each result file and summarised:
+```
+ for file in *.txt; do awk 'FNR==1 || $1>=16 {print FILENAME, $0}' "$file"; done > merged_Kraken_topID.csv
+```
+
+# Assemblies
+### 1. Shovill
+*De novo* genome assemblies were generated using Shovill (v1.1.0)
+
+```
+shovill --gsize 0.58M -- outdir <sampleID> -- R1 <sampleID>_trimmed_R1.fastq.gz  --R2 <sampleID>_trimmed_R2.fastq.gz
+```
+
+
 
 
 

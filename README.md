@@ -28,6 +28,57 @@ seqkit stats <sampleID>_mapped.R1/R2.fastq.gz> >> <sampleID_outputfile>;done
 ```
 The average read depth was calculated as follows: (number of reads) x (average read length)/length of reference genome
 
-### 3. Percentage of the reference genome covered with 5X read coverage
-Reads mapped to the reference genome were aligned to the *M.genitalium* G37 reference genome (NC_000908.2) using snippy(v4.6.0) and samtools (v1.10).  Snippy was also used to determine 
+### 3. Variant calling
+Trimmed  paired end reads were aligned to the  *M.genitalium* G37 reference genome (NC_000908.2) using snippy(v4.6.0), requiring a minimum of five or more supporting reads and a variant frequency 0.8 or greater:
+
+```
+snippy --mincov 5 --minfrac 0.8 --ref <path/to/reference> --R1 <sampleID>_mapped_R1.fastq.gz  --R2 <sampleID>_mapped_R1.fastq.gz --outdir <sampleID>
+```
+
+### 4. Genome coverage
+The  percentage of the reference genome covered for each sample was calculated.
+
+Sort snps.bam files found in the snippy output folder for each genome:
+```
+{#!/bin/bash}
+# Set working directory
+cd <path to working directory>
+# Loop through all subdirectories containing BAM files
+for dir in */ ; do
+    cd "$dir"
+    # Loop through all BAM files in the subdirectory
+    for bam_file in *snps.bam; do
+        # Get base name of the BAM file
+        base=$(basename "$bam_file" .bam)
+        # Sort BAM file
+        samtools sort -o "$base".sorted.bam "$bam_file"
+    done
+    cd ..
+done
+```
+
+To calculate percentage of sites with greater than or equal to 5 times coverage for each snps.sorted.bam file and outputs combined into one csv file:
+
+``` {!/bin/bash}
+# Merge the coverage files for all subdirectories and append to the output file
+output_file="<path/to/merged_file.csv>"
+echo "" > "$output_file"
+
+# Loop through all subdirectories containing BAM files
+for dir in */ ; do
+    cd "$dir"
+    # Loop through all BAM files in the subdirectory
+    for bam_file in *.sorted.bam; do
+        # Get base name of the BAM file
+        base=$(basename "$bam_file" .bam)
+        # Calculate genome coverage
+        bedtools genomecov -ibam "$bam_file" -d | awk '{if($3>=5) total++}END{if(NR>0) print "'"$dir"' " total/NR*100 "%"}' > "$base"_coverage.txt
+        # Append the coverage file for this BAM file to the output file
+        cat "$base"_coverage.txt >> "$output_file"
+    done
+    cd ..
+done
+```
+
+
 

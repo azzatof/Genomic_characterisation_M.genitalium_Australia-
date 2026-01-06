@@ -97,6 +97,11 @@ Top species match and percentage were extrated from each result file and summari
 ```
 shovill --gsize 0.58M -- outdir <sampleID> -- R1 <sampleID>_trimmed_R1.fastq.gz  --R2 <sampleID>_trimmed_R2.fastq.gz
 ```
+### 2. Quality control of genome assemblies
+
+Assessment of the quality of  *De novo* genome assemblies was performed uisng QUAST (v5.3.0)
+
+```
 
 
 

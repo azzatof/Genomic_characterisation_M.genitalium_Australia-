@@ -173,4 +173,6 @@ head(hb.results$partition.df)
 write.csv(hb.results$partition.df, file = "hierbaps_partition.csv", col.names = TRUE, row.names = FALSE)
 ```
 Results:
+```
+[hierbaps_partition.csv](https://github.com/user-attachments/files/24465638/hierbaps_partition.csv)
 

@@ -181,7 +181,7 @@ To assess the evolutionary trajectory of *M.genitalium ancestral character state
 
 The following R code was used
 ```
-rary(ape)  # use for reading tree
+library(ape)  # use for reading tree
 library(phytools)  # use for ASR
 library(tidyverse)  # data manipulation
 library(ggplot2)  # plotting

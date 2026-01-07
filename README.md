@@ -174,3 +174,4 @@ write.csv(hb.results$partition.df, file = "hierbaps_partition.csv", col.names = 
 ```
 Results:
 
+- [BAPS result table](results/hierbaps_partition.csv)

@@ -99,11 +99,64 @@ shovill --gsize 0.58M -- outdir <sampleID> -- R1 <sampleID>_trimmed_R1.fastq.gz 
 ```
 ### 2. Quality control of genome assemblies
 
-Assessment of the quality of  *De novo* genome assemblies was performed uisng QUAST (v5.3.0)
+To assess the quality of  *De novo* genome assemblies QUAST (v5.3.0) was performed.
 
 ```
+{#!/bin/bash}
+# Set working directory
+cd path/to/assemblies/contigs.fa
+#loop through all subdirectories
+for dir in */; do
+    cd "$dir" || continue
+    # Loop through all contig.fa files in subdirectory
+    for file in contigs.fa; do
+        if [[-f "$file" ]]; then
+           echo "Running Quast on $dir$file"
+           quast "$file"
+        fi
+    done
+```
+ 
+# Whole genome Maximum likelihood phylogeny (ML)
 
+### 1. Alignment of Genomes to *M.genitalium* reference genome
+A pseudoalignment of all genomes was generated using Snippy (v4.6.0), based on the variant calling output described in the quality control section above.
 
+The snippy-core function in Snippy (v4.6.0) was used to align all genomes against the Mycoplasma genitalium G37 reference genome (GenBank accession number NC_000908.2):
+
+```
+snippy-core --ref G37.fasta Snippy/output/folder/for/each/genome
+```
+
+### 2. Recombination filtering
+High recombination regions of the MgpA operon as identifed previously by Fookes, *et al*. were masked to N characters in the snippy full alignment using BEDTools (v2.3.0).  These problematic positions are listed in a bed file.
+```
+bedtools maskfasta -fi MG.core.full.aln -fo MG.core.full.positional.aln -bed Global_local_MgpA_reco_sites.bed
+```
+
+Additional recombinant regions to the above sites were identified using Gubbins (v2.4.1), appying a minumum SNP threshold of 40 and using the maksed alignment generated in the above step:
+
+```
+run_gubbins.py -i 20 -- threads 10 min_snps 40 MG.core.full.positional.aln
+```
+Following Gubbins analysis, a SNP alignment comprising 7,097 variable sites was generated using Core-SNP-filter (v0.1.1). A 95% soft-core threshold was applied, using the Gubbins polymorphic sites alignment as input.
+
+```
+coresnpfilter -c 0.95 MG.core.full.positional.aln > MG.Alignment.positional.filtered_polymorphic_sites_95.fasta
+```
+
+### 3. Maximum likelihood phylogeny
+A maximum likelihood phylogenetic tree was generated using IQ-tree (v2.2.0.3):
+
+```
+iqtree -s MG.Alignment.positional.filtered_polymorphic_sites_95.fasta -B 1000
+```
+
+# Population Structure 
+### 1. Heirarchial Bayesian of Population Sturcture (BAPS)
+Lineages were identified using rhierbaps (v1.1.4) algorithm using a maximum depth of three. Up to 50 populations were considered and assignment probabilities were taken into considertion.
+
+The following R code was used with 
 
 
 

@@ -4,7 +4,7 @@ Francesca Azzato, George Taiaroa , Janath Fernando, Mona L Taouk, Vesna De Petra
 This GitHub repository contains all code used in this study. Sequence reads are available from the NCBI database under BioProjects PRJNA1367946 and PRJEB5172, with accession numbers provided in the Supplementary Dataset accompanying this publication. All analyses performed in this study can be replicated using the code provided, with input names, directory paths, and file names modified as required.
 
 
-# Quality Control of *Mycoplasma genitalium* sequence reads
+## Quality Control of *Mycoplasma genitalium* sequence reads
 
 ### 1. Pre-filtering of Sequences
 
@@ -90,7 +90,7 @@ Top species match and percentage were extrated from each result file and summari
  for file in *.txt; do awk 'FNR==1 || $1>=16 {print FILENAME, $0}' "$file"; done > merged_Kraken_topID.csv
 ```
 
-# Assemblies
+## Assemblies
 ### 1. Shovill
 *De novo* genome assemblies were generated using Shovill (v1.1.0)
 
@@ -117,7 +117,7 @@ for dir in */; do
     done
 ```
  
-# Whole genome Maximum likelihood phylogeny (ML)
+## Whole genome Maximum likelihood phylogeny (ML)
 
 ### 1. Alignment of Genomes to *M.genitalium* reference genome
 A pseudoalignment of all genomes was generated using Snippy (v4.6.0), based on the variant calling output described in the quality control section above.
@@ -152,9 +152,9 @@ A maximum likelihood phylogenetic tree was generated using IQ-tree (v2.2.0.3):
 iqtree -s MG.Alignment.positional.filtered_polymorphic_sites_95.fasta -B 1000
 ```
 
-# Population Structure 
+## Population Structure 
 ### 1. Heirarchial Bayesian of Population Sturcture (BAPS)
-Lineages were identified using rhierbaps (v1.1.4) algorithm using a maximum depth of three. Up to 50 populations were considered and assignment probabilities were taken into considertion.
+Lineages were identified using rhierbaps (v1.1.4) algorithm in R using a maximum depth of three. Up to 50 populations were considered and assignment probabilities were taken into considertion.
 
 The following R code was used:
 ```
@@ -175,3 +175,54 @@ write.csv(hb.results$partition.df, file = "hierbaps_partition.csv", col.names = 
 Results:
 
 - [BAPS result table](results/hierbaps_partition.csv)
+
+## Ancestral reconstruction
+To assess the evolutionary trajectory of *M.genitalium ancestral character state reconstruction was performed using ape (v4.3.3) in R under the equal rates model.  The maximum likelihood tree was used as input.
+
+The following R code was used
+```
+rary(ape)  # use for reading tree
+library(phytools)  # use for ASR
+library(tidyverse)  # data manipulation
+library(ggplot2)  # plotting
+library(ggtree)  # tree plotting
+
+
+# Read in the tree file
+tree <- read.tree("Alignment.positional.filtered_polymorphic_sites_95.fasta_midpoint.nwk")
+
+# Load metadata
+traits <- read.csv("meta_data_for_rectangular_tree.csv", strip.white = TRUE, header = TRUE) %>%
+  select(Isolate, BAPS) %>%
+  rename(tips = Isolate, lineage = BAPS)
+
+# Set names as tip labels
+trait_vector <- setNames(traits$lineage, traits$tip)
+
+# This should return TRUE if all tip names in the vector match those in the tree
+all(tree$tip.label %in% names(trait_vector))
+
+# Run ancestral state (default model= ER)
+asr_result <- ace(trait_vector, tree, type = "discrete")
+
+# View likelihood of each BAP being that "state" for each node
+head(asr_result$lik.anc)
+
+# Make that a dataframe
+asr_df <- as.data.frame(asr_result$lik.anc)
+asr_df$node <- as.numeric(rownames(asr_df))
+rownames(asr_df) <- NULL
+
+# Reshape to long format
+df_long <- asr_df %>%
+  pivot_longer(cols = starts_with("BAPS"),
+               names_to = "BAPS_group",
+               values_to = "likelihood")
+
+# For each node, select the BAPS group with the highest likelihood
+df_max <- df_long %>%
+  group_by(node) %>%
+  slice_max(likelihood, with_ties = FALSE) %>%
+  ungroup()
+```
+

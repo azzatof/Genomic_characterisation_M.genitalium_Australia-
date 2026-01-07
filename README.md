@@ -156,7 +156,21 @@ iqtree -s MG.Alignment.positional.filtered_polymorphic_sites_95.fasta -B 1000
 ### 1. Heirarchial Bayesian of Population Sturcture (BAPS)
 Lineages were identified using rhierbaps (v1.1.4) algorithm using a maximum depth of three. Up to 50 populations were considered and assignment probabilities were taken into considertion.
 
-The following R code was used with 
+The following R code was used:
+```
+library("ggtree")
+library("phytools")
+library("rhierbaps")
 
+set.seed (1234)
 
+MG.core.full.aln <- read.dna('MG.Alignment.positional.filtered_polymorphic_sites_95.fasta', format="fasta" )
+snp.matrix <- load_fasta("MG.Alignment.positional.filtered_polymorphic_sites_95.fasta")
+
+hb.results <- hierBAPS(snp.matrix, max.depth = 3, n.pops = 50, quiet = TRUE)
+head(hb.results$partition.df)
+
+write.csv(hb.results$partition.df, file = "hierbaps_partition.csv", col.names = TRUE, row.names = FALSE)
+```
+Results:
 

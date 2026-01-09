@@ -177,7 +177,7 @@ Results:
 - [BAPS result table](results/hierbaps_partition.csv)
 
 ## Ancestral reconstruction
-To assess the evolutionary trajectory of *M.genitalium ancestral character state reconstruction was performed using ape (v4.3.3) in R under the equal rates model.  The maximum likelihood tree was used as input.
+To assess the evolutionary trajectory of *M.genitalium* ancestral character state reconstruction was performed using ape (v4.3.3) in R under the equal rates model.  The maximum likelihood tree was used as input.
 
 The following R code was used
 ```
@@ -225,4 +225,12 @@ df_max <- df_long %>%
   slice_max(likelihood, with_ties = FALSE) %>%
   ungroup()
 ```
+## cgMLST
+The *M.genitalium* cgMLST schema was developed in this study.
+A prodigal training file for *M.genitalium* was made using the *M.genitalium* reference genome ((G37; Genbank accession NC_000908.2), using prodigal (v2.6.3):
 
+```
+prodigal -i G37.fna -t MG_training_file.trn -p single
+```
+Training file: 
+ 

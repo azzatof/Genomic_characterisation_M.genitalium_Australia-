@@ -226,11 +226,30 @@ df_max <- df_long %>%
   ungroup()
 ```
 ## cgMLST
+### 1. Create Schema
 The *M.genitalium* cgMLST schema was developed in this study.
 A prodigal training file for *M.genitalium* was made using the *M.genitalium* reference genome ((G37; Genbank accession NC_000908.2), using prodigal (v2.6.3):
 
 ```
 prodigal -i G37.fna -t MG_training_file.trn -p single
 ```
-Training file: 
- 
+Training file: [MG_training_file](files/MG_training_file/trn)
+
+The cgMLST scheme was developed using the Create Schema module in chewBBACA (version 3.3.2):
+
+```
+chewBBACA.py CreateSchema -i path/to/input/assemblies/folder -g path/to/output/folder --n MG_schema --ptf path/to/MG/Training/file/MG_training_file.trn
+```
+
+### 2. Annotate Schema
+Gene annotation for the loci included in the schema was performed using the UniProtFinder module:
+
+```
+chewBBACA.py Uniprotfinder -i path/to/schmea/folder/MG_cgmlst_Schema -o path/to/output/folder/schema_annotations -t /path/to/cds_coordinates.tsv --taxa "Mycoplasma genitalium" --cpu 4
+```
+### 3. Allele Calling
+Allele calling for all *M. genitalium* genomes was peformed using the AlleleCall module, with the genome assemblies provided as input:
+
+```
+chewBBACA.py AlleleCall -i path/to/assemblies/input/folder -g path/to/schmea/folder/MG_cgmlst_Schema -o path/to/output/folder/MG_cgmlst_allele_call_2 --cpu 4
+```

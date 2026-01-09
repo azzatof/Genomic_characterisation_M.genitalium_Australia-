@@ -253,3 +253,10 @@ Allele calling for all *M. genitalium* genomes was peformed using the AlleleCall
 ```
 chewBBACA.py AlleleCall -i path/to/assemblies/input/folder -g path/to/schmea/folder/MG_cgmlst_Schema -o path/to/output/folder/MG_cgmlst_allele_call_2 --cpu 4
 ```
+### 4.Define the set of loci constituting the dataset’s core genome (ExtractCgMLST)
+To determine the loci that are  present in more than 95% of the dataset ExtractCgMLST module was used:
+
+```
+chewBBACA.py ExtractCgMLST -i path/to/input/file/MG_cgmlst_allele_call_2/results_alleles.tsv  -o path/to/output/folder/MG_extracted_cgmlst_2
+```
+cgMLST allele calling final results:

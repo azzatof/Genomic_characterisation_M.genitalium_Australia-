@@ -260,5 +260,9 @@ To determine the loci that are  present in more than 95% of the dataset ExtractC
 chewBBACA.py ExtractCgMLST -i path/to/input/file/MG_cgmlst_allele_call_2/results_alleles.tsv  -o path/to/output/folder/MG_extracted_cgmlst_2
 ```
 cgMLST allele calling final results:
-Table of alleles for each gene in the schema for all isolates: [cgMLST95.csv}(results/cgMLST/cgMLST95.tsv)
+Table of alleles for each gene in the schema for all isolates: [cgMLST95.tsv](results/cgMLST/cgMLST95.tsv)
+
+1760 loci included in the final schema for this study: [cgMLSTschema95.txt](results/cgMLST/cgMLSTschema95.txt)
+
+
 

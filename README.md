@@ -280,11 +280,170 @@ Result matrix: [cgmlst_distances_0.95.txt](results/cgMLST/cgmlst_distances_0.95.
 ## Adjusted Rand Index
 To assess the stability of BAPS group assignments we calculated the adjusted rand index (ARI) between the original BAPS group clustering assignmnets  and those derived from 1000 botstrap and subsampled data sets of 50%, 70% and 90%.  To calculate ARI we used mclust (v6.1.1).
 
-The following r code was used with the MG.Alignment.positional.filtered_polymorphic_sites_95.fasta file as input.
+### 1. ARI across bootstrap replicates
+
+To calculate the distribution of ARI scores across 1,000 bootstrap iterations of the hierarchical Bayesian Analysis of Population Structure (BAPS), the following R code was used:
 
 ```
+library(phangorn)
+library("mclust")  # for adjustedRandIndex
+library(rhierbaps)
 
 
 
+# Set seed for reproducibility
+set.seed(1234)
+
+# Load SNP alignment
+aln_file <- "Alignment.positional.filtered_polymorphic_sites_95.fasta"
+snp.matrix <- load_fasta(aln_file)
+
+# Run original hierBAPS
+original_result <- hierBAPS(snp.matrix, max.depth = 3, n.pops = 20, quiet = TRUE)
+
+# Extract original clustering (level 1)
+original_partition <- original_result$partition.df
+orig_clusters <- original_partition$cluster1
+
+# Function to perform one bootstrap replicate
+bootstrap_hierbaps <- function(snp_matrix, original_clusters) {
+  n_cols <- ncol(snp_matrix)
+  
+  # Resample SNP positions with replacement
+  resampled_snp <- snp_matrix[, sample(1:n_cols, replace = TRUE)]
+  
+  # Run hierBAPS
+  boot_result <- hierBAPS(resampled_snp, max.depth = 3, n.pops = 20, quiet = TRUE)
+  
+  # Extract level 1 clustering
+  boot_partition <- boot_result$partition.df
+  
+  # Ensure sample order matches
+  boot_clusters <- boot_partition$cluster1[match(rownames(original_partition), rownames(boot_partition))]
+  
+  # Compute Adjusted Rand Index
+  ari <- adjustedRandIndex(original_clusters, boot_clusters)
+  return(ari)
+}
+
+# Run bootstraps
+n_bootstraps <- 1000
+bootstrap_ARI <- numeric(n_bootstraps)
+
+for (i in 1:n_bootstraps) {
+  cat("Running bootstrap", i, "\n")
+  bootstrap_ARI[i] <- bootstrap_hierbaps(snp.matrix, orig_clusters)
+}
+
+# Results
+summary(bootstrap_ARI)
+hist(bootstrap_ARI, breaks = 20, main = "Bootstrap Adjusted Rand Index", xlab = "ARI")
+
+# Save results
+write.csv(bootstrap_ARI, "bootstrap_ARI_results.csv", row.names = FALSE)
+```
+## 2. ARI across subsampling fractions
+To calculate the distribution of ARI scores across subsampling fractions for hierarchical Bayesian Analysis of Population Structure (BAPS), the following R code was used:
+
+```
+# Load packages
+library(rhierbaps)
+library(ape)
+library(dplyr)
+library(mclust)
+library(ggplot2)
+library("Hmisc")
+setwd("~/Desktop/tree_analysis/MG_AMR_graphs/SNP distance threshold")
 
 
+# ----- Parameters -----
+alignment_path <- "Alignment.positional.filtered_polymorphic_sites_95.fasta"  # multi-FASTA alignment used in rhierbaps
+metadata_path <- "fullclusters.csv"           # must include genome IDs and original rhierbaps cluster
+subsample_fractions <- c(0.9, 0.7, 0.5)  # Subsampling fractions to test: 90%, 70%, 50%
+n_replicates <- 10  # Number of replicates for each subsampling fraction
+ari_results <- data.frame(SubsampleFraction = numeric(0), ARI = numeric(0))  # To store ARI results
+output_dir <- "rbaps_robustness_output"  # Output directory
+dir.create(output_dir, showWarnings = FALSE)  # Create the output directory
+
+# ----- Load Data -----
+alignment <- load_fasta(alignment_path)
+metadata <- read.csv(metadata_path, stringsAsFactors = FALSE)
+
+# Make sure genome names in metadata match alignment
+metadata <- metadata %>% filter(Isolate %in% rownames(alignment))
+alignment <- alignment[metadata$Isolate, ]  # re-order
+
+# Store original cluster labels
+full_labels <- metadata$Cluster  # should be a factor or integer
+
+# ----- Stratified Subsampling Function -----
+stratified_subsample <- function(metadata, group_col, subsample_fraction) {
+  metadata %>%
+    group_by(!!sym(group_col)) %>%
+    sample_frac(size = subsample_fraction) %>%
+    ungroup()
+}
+
+# ----- Function to Run rhierbaps and Calculate ARI -----
+run_baps_subsample <- function(sub_metadata, full_labels, alignment) {
+  # Subset alignment
+  sub_genomes <- sub_metadata$Isolate
+  sub_alignment <- alignment[sub_genomes, ]
+  
+  # Run rhierbaps (1 level of clustering)
+  baps_result <- hierBAPS(sub_alignment, max.depth = 2, n.pops = 20)
+  
+  # Extract cluster labels (level 1)
+  baps_clusters <- baps_result$partition.df
+  sub_labels <- baps_clusters %>%
+    filter(Isolate %in% sub_genomes) %>%
+    arrange(match(Isolate, sub_genomes)) %>%
+    pull(`level 1`)
+  
+  # Match full_labels for these genomes
+  ref_labels <- full_labels[match(sub_genomes, metadata$Isolate)]
+  
+  # Check if lengths are the same
+  if (length(ref_labels) != length(sub_labels)) {
+    stop(paste("Length mismatch: ref_labels =", length(ref_labels), 
+               "sub_labels =", length(sub_labels)))
+  }
+  
+  # Compute ARI
+  ari <- adjustedRandIndex(ref_labels, sub_labels)
+  
+  return(ari)
+}
+
+# ----- Run Subsampling and BAPS for Multiple Fractions -----
+all_ari_scores <- data.frame(SubsampleFraction = numeric(0), replicate = numeric(0), ARI = numeric(0))
+
+# Loop over each subsampling fraction (90%, 70%, 50%)
+for (subsample_fraction in subsample_fractions) {
+  cat("Running subsample fraction:", subsample_fraction, "\n")
+  
+  # Store ARI scores for this subsampling fraction
+  ari_scores <- numeric(n_replicates)
+  
+  # Run replicates
+  set.seed(123)  # reproducibility
+  for (i in 1:n_replicates) {
+    sub_metadata <- stratified_subsample(metadata, "Cluster", subsample_fraction)
+    ari <- tryCatch({
+      run_baps_subsample(sub_metadata, full_labels, alignment)
+    }, error = function(e) {
+      warning(paste("Replicate", i, "failed:", e$message))
+      return(NA)
+    })
+    
+    ari_scores[i] <- ari
+  }
+  
+  # Store results for this subsample fraction
+  all_ari_scores <- rbind(all_ari_scores, data.frame(SubsampleFraction = subsample_fraction, replicate = 1:n_replicates, ARI = ari_scores))
+}
+
+# ----- Save and Plot Results -----
+# Save results to CSV
+write.csv(all_ari_scores, file.path(output_dir, "ari_scores.csv"), row.names = FALSE)
+```

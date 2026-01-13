@@ -342,6 +342,11 @@ hist(bootstrap_ARI, breaks = 20, main = "Bootstrap Adjusted Rand Index", xlab = 
 # Save results
 write.csv(bootstrap_ARI, "bootstrap_ARI_results.csv", row.names = FALSE)
 ```
+
+Results: 
+Distribution of ARI scores for 1000 bootstrap replicates: [bootstrap_ari_scores_1000.csv](results/Stats/bootstrap_ari_scores_1000.csv)
+
+
 ## 2. ARI across subsampling fractions
 To calculate the distribution of ARI scores across subsampling fractions for hierarchical Bayesian Analysis of Population Structure (BAPS), the following R code was used:
 

@@ -454,3 +454,6 @@ write.csv(all_ari_scores, file.path(output_dir, "ari_scores.csv"), row.names = F
 ```
 Results: 
 Distribution of ARI scores for subsampling fractions: [ARI_subsampling_fractions_results.csv](results/Stats/ARI_subsampling_fractions_results.csv)
+
+### Linear Regression 
+To assess the relationship between pairwise SNP distances and pairwise allelic distances we applied linear regression model 

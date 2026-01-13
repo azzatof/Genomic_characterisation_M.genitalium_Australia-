@@ -274,7 +274,8 @@ The cgMLST results table was converted to a symmetrical distance matrix using cg
 ```
 cgMLST-dists cgMLST95.tsv > cgmlst_distances_0.95.txt
 ```
-Result matrix
+Result matrix: [cgmlst_distances_0.95.txt](results/cgMLST/cgmlst_distances_0.95.txt)
+
 
 
 

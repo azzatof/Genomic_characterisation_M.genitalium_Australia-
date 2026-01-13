@@ -268,6 +268,16 @@ Number of and percentage of uncalled genes per genome in this dataset: [mdata_st
 
 Gene presence/absence table (1 = present. 0 = absent): [Presence_Absence.tsv](results/cgMLST/Presence_Absence.tsv)
 
+### 5. cgMLST allelic differences
+The cgMLST results table was converted to a symmetrical distance matrix using cgMLST-dists:
+
+```
+cgMLST-dists cgMLST95.tsv > cgmlst_distances_0.95.txt
+```
+Result matrix
+
+
+
 
 
 

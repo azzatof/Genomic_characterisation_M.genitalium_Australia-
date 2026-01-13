@@ -452,3 +452,5 @@ for (subsample_fraction in subsample_fractions) {
 # Save results to CSV
 write.csv(all_ari_scores, file.path(output_dir, "ari_scores.csv"), row.names = FALSE)
 ```
+Results: 
+Distribution of ARI scores for subsampling fractions: [ARI_subsampling_fractions_results.csv](results/Stats/ARI_subsampling_fractions_results.csv)

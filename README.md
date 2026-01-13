@@ -277,6 +277,12 @@ cgMLST-dists cgMLST95.tsv > cgmlst_distances_0.95.txt
 Result matrix: [cgmlst_distances_0.95.txt](results/cgMLST/cgmlst_distances_0.95.txt)
 
 
+## Adjusted Rand Index
+To assess the stability of BAPS group assignments we calculated the adjusted rand index (ARI) between the original BAPS group clustering assignmnets  and those derived from 1000 botstrap and subsampled data sets of 50%, 70% and 90%.  To calculate ARI we used mclust (v6.1.1).
+
+The following r code was used with the MG.Alignment.positional.filtered_polymorphic_sites_95.fasta file as input.
+
+```
 
 
 

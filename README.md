@@ -266,7 +266,7 @@ Table of alleles for each gene in the schema for all isolates: [cgMLST95.tsv](re
 
 Number of and percentage of uncalled genes per genome in this dataset: [mdata_stats.tsv](results/cgMLST/mdata_stats.tsv)
 
-Gene presence/absence table (1 = present. 0 = absent): [Presence_Absence.tsv](results/cgMLST/Presence_Absence/tsv)
+Gene presence/absence table (1 = present. 0 = absent): [Presence_Absence.tsv](results/cgMLST/Presence_Absence.tsv)
 
 
 

@@ -1,0 +1,5 @@
+Subsampling fraction,Mean_ARI,Lower_CI,Upper_CI
+50%,0.7544,0.633,0.9839
+70%,0.9552,0.7547,1
+90%,1,1,1
+,,,

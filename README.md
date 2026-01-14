@@ -485,4 +485,5 @@ Linear <- Linear +
 ggsave("simple.linear.regression_snpvscgmlst_distances.pdf", Linear, width =  210, height = 297, units = "mm", device = "pdf")
 ```
 Results:
-Linear regression plot comparing pairwise SNP distances to pairwise allelic distances: [simple.linear.regression_snpvscgmlst_distances_final.pdf](results/Stats/simple.linear.regression_snpvscgmlst_distances_final.pdf)
+Linear regression plot comparing pairwise SNP distances to pairwise allelic distances: [simple.linear.regression_snp.scgmlst_distances_final.pdf](results/Stats/simple.linear.regression_snp.scgmlst_distances_final.pdf)
+

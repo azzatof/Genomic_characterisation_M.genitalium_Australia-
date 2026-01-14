@@ -456,4 +456,9 @@ Results:
 Distribution of ARI scores for subsampling fractions: [ARI_subsampling_fractions_results.csv](results/Stats/ARI_subsampling_fractions_results.csv)
 
 ### Linear Regression 
-To assess the relationship between pairwise SNP distances and pairwise allelic distances we applied linear regression model 
+To assess the relationship between pairwise SNP distances and pairwise allelic distances we applied linear regression model.
+
+The following r-code was used with [
+
+```
+dist <- read.csv("cgmlst_dist_melt_final.csv",header=TRUE)

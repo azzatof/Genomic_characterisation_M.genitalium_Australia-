@@ -487,3 +487,4 @@ ggsave("simple.linear.regression_snpvscgmlst_distances.pdf", Linear, width =  21
 Results:
 Linear regression plot comparing pairwise SNP distances to pairwise allelic distances: [simple.linear.regression_snp.scgmlst_distances_final.pdf](results/Stats/simple.linear.regression_snp.scgmlst_distances_final.pdf)
 
+## Multinomial logistic regression

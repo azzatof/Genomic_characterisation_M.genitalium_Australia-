@@ -458,7 +458,31 @@ Distribution of ARI scores for subsampling fractions: [ARI_subsampling_fractions
 ### Linear Regression 
 To assess the relationship between pairwise SNP distances and pairwise allelic distances we applied linear regression model.
 
-The following r-code was used with [
+The following r-code was used with [cgmlst_dist_melt_final.csv](files/R-studio_input_files/cgmlst_dist_melt_final.csv)
 
 ```
+# Read in csv file
 dist <- read.csv("cgmlst_dist_melt_final.csv",header=TRUE)
+
+# linear regression model
+Data <- lm(formula = SNP ~ cgmlst, data= dist)
+
+# creating a plot to visualise the data
+# Creating the plot
+Linear <- ggplot(Data, aes(x=cgmlst, y=SNP)) +
+  geom_point(size=0.1, colour = "#73a2c6") +
+  geom_smooth(method="lm", colour = "#00429d", size= 0.5) +
+  xlab("Pairwise Allelic distances") +
+  ylab("SNP distances") + 
+  theme(panel.background = element_rect(fill = "white"), axis.line = element_line(colour ="Black", size= 0.5))
+
+# Adding correlation coefficient and p-value annotations
+Linear <- Linear + 
+  stat_cor(method = "pearson", label.x = 250, label.y = 2700, 
+           aes( label = paste(..rr.label.., " (p = ", ..p.label.., ")")))```
+
+# save the plot
+ggsave("simple.linear.regression_snpvscgmlst_distances.pdf", Linear, width =  210, height = 297, units = "mm", device = "pdf")
+```
+Results:
+Linear regression plot comparing pairwise SNP distances to pairwise allelic distances: 

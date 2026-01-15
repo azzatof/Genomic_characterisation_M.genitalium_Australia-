@@ -491,7 +491,7 @@ Linear regression plot comparing pairwise SNP distances to pairwise allelic dist
 ### 1. Multinomial logistic regression
 To assess variables associated with BAPS groups assignments a standard multinomial logistic regression model was applied using maximum liklelihood estimation calculate the odds ratios using nnet package (v7.3.20). The following characteristics were included in the model sex, sexual risk group and Age.
 
-The following R code was used with [meta_data_for_regression_analysis_deomgraphic.csv](files/R-studio_input_files/meta_data_for_regression_analysis_deomgraphic.csv)
+The following R code was used with [meta_data_for_regression_analysis_deomgraphic.csv](files/R-studio_input_files/meta_data_for_regression_analysis_deomgraphic.csv) as input:
 
 ```
 
@@ -599,3 +599,108 @@ combined_results <- bind_rows(
 # Export/Save results
 write.csv(combined_results, "combined_results_BAPS_vs_sex.csv", row.names = FALSE)
 ```
+### 2. Bias-reduced multinomial logistic regression 
+To assess genotypic susceptibility  mutations and their association with BAPS groups assignments a bias-reduced multinomial logistc regression model was applied using penialised likelihood estimation (typically based on Firth's correction/Jeffreys prior) to  calculate the odds ratios using nnet package (v7.3.20). This was applied  to reduce small-sample bias and address separation. 
+
+The following R code was used with [meta_data_for_regression_analysis_deomgraphic.csv](files/R-studio_input_files/meta_data_for_regression_analysis_deomgraphic.csv) as input:
+
+```
+library(brglm2)
+library(dplyr)
+library(tidyr)
+
+# Read and prepare data
+df <- read.csv("MG_Fluroquinolone_BAP_association_metatdata.csv")
+df
+df$BAPS <- factor(df$BAPS)
+df$Mutation <- factor(df$Mutation, levels = c("WT", "S83I", "S83I _M95I", "Single", "Dual"))  # WT as reference
+
+#-------------------------------
+# 1. Bias-Reduced Multinomial Logistic Regression (Mutation ~ BAPS)
+#-------------------------------
+br_model <- brmultinom(Mutation ~ BAPS, data = df, type = "AS_mean")  # Alternative: type = "correction"
+
+# Get coefficients and SEs
+coefs <- coef(br_model)
+ses <- sqrt(diag(vcov(br_model)))
+ses_matrix <- matrix(ses, nrow = nrow(coefs), byrow = TRUE)
+rownames(ses_matrix) <- rownames(coefs)
+colnames(ses_matrix) <- colnames(coefs)
+
+# Compute ORs, CIs, p-values
+brglm_results <- data.frame()
+z <- 1.96  # For 95% CI
+
+for (level in rownames(coefs)) {
+  OR <- exp(coefs[level, ])
+  lower_CI <- exp(coefs[level, ] - z * ses_matrix[level, ])
+  upper_CI <- exp(coefs[level, ] + z * ses_matrix[level, ])
+  z_scores <- coefs[level, ] / ses_matrix[level, ]
+  p_values <- 2 * (1 - pnorm(abs(z_scores)))
+  
+  temp <- data.frame(
+    Mutation_Level = level,
+    Variable = names(OR),
+    OR = round(OR, 2),
+    CI_lower = round(lower_CI, 2),
+    CI_upper = round(upper_CI, 2),
+    p_value = round(p_values, 4),
+    Method = "Bias-Reduced Multinomial Logistic Regression"
+  )
+  
+  brglm_results <- rbind(brglm_results, temp)
+}
+
+#---------------------------------------
+# 2. Chi-square test: BAPS group vs each mutation
+#---------------------------------------
+
+chi_mutation_results <- data.frame()
+
+# Loop through mutations (excluding WT)
+for (mutation in levels(df$Mutation)[levels(df$Mutation) != "WT"]) {
+  df$Mutation_bin <- ifelse(df$Mutation == mutation, mutation, "Other")
+  
+  for (group in levels(df$BAPS)) {
+    df$Group_bin <- ifelse(df$BAPS == group, group, "Other")
+    
+    tab <- table(df$Group_bin, df$Mutation_bin)
+    
+    # Only continue if we have a 2x2 table
+    if (all(dim(tab) == c(2, 2))) {
+      test <- chisq.test(tab)
+      
+      # Optional: calculate OR and CI
+      or <- (tab[1,1] * tab[2,2]) / (tab[1,2] * tab[2,1])
+      se_log_or <- sqrt(1/tab[1,1] + 1/tab[1,2] + 1/tab[2,1] + 1/tab[2,2])
+      ci_lower <- exp(log(or) - 1.96 * se_log_or)
+      ci_upper <- exp(log(or) + 1.96 * se_log_or)
+      
+      chi_mutation_results <- rbind(chi_mutation_results, data.frame(
+        Mutation_Level = mutation,
+        Variable = paste0("BAPS", group),
+        OR = round(or, 2),
+        CI_lower = round(ci_lower, 2),
+        CI_upper = round(ci_upper, 2),
+        p_value = round(test$p.value, 4),
+        Method = test$method,
+        BAPS_group = group
+      ))
+    } else {
+      cat(sprintf("Skipping mutation %s in BAPS group %s (table not 2x2)\n", mutation, group))
+    }
+  }
+}
+
+#-------------------------------
+# 3. Combine results
+#-------------------------------
+combined_results <- bind_rows(
+  brglm_results %>% mutate(BAPS_group = gsub("BAPS", "", Variable)),
+  chi_mutation_results
+)
+
+#-------------------------------
+# 4. Export to CSV
+#-------------------------------
+write.csv(combined_results, "combined_flu_mutation_results_brglm2.csv", row.names = FALSE)

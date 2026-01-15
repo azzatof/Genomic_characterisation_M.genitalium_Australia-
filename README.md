@@ -703,5 +703,6 @@ combined_results <- bind_rows(
 
 write.csv(combined_results, "combined_flu_mutation_results_brglm2.csv", row.names = FALSE)
 ```
-Results:
-Result output from R code: 
+Results
+
+Result output from R code: [combined_flu_mutation_results_brglm2.csv](results/Stats/combined_flu_mutation_results_brglm2.csv)

@@ -599,6 +599,9 @@ combined_results <- bind_rows(
 # Export/Save results
 write.csv(combined_results, "combined_results_BAPS_vs_sex.csv", row.names = FALSE)
 ```
+Results
+1. Sex vs BAPS multimomial logistic regression results: [combined_results_BAPS_vs_sex.csv](results/Stats/combined_results_BAPS_vs_sex.csv)
+
 ### 2. Bias-reduced multinomial logistic regression 
 To assess genotypic antimicroibal susceptibility  mutations and their association with BAPS groups assignments a bias-reduced multinomial logistc regression model was applied using penialised likelihood estimation (typically based on Firth's correction/Jeffreys prior) to  calculate the odds ratios using nnet package (v7.3.20). This was applied  to reduce small-sample bias and address separation. 
 

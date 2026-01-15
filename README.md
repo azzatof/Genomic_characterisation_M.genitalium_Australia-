@@ -491,7 +491,7 @@ Linear regression plot comparing pairwise SNP distances to pairwise allelic dist
 ### 1. Multinomial logistic regression
 To assess variables associated with BAPS groups assignments a standard multinomial logistic regression model was applied using maximum liklelihood estimation calculate the odds ratios using nnet package (v7.3.20). The following characteristics were included in the model sex, sexual risk group and Age.
 
-The following R code was used with 
+The following R code was used with [meta_data_for_regression_analysis_deomgraphic.csv](files/R-studio_input_files/meta_data_for_regression_analysis_deomgraphic.csv)
 
 ```
 

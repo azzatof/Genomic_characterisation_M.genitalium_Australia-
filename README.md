@@ -615,9 +615,9 @@ df
 df$BAPS <- factor(df$BAPS)
 df$Mutation <- factor(df$Mutation, levels = c("WT", "S83I", "S83I _M95I", "Single", "Dual"))  # WT as reference
 
-#-------------------------------
+
 # 1. Bias-Reduced Multinomial Logistic Regression (Mutation ~ BAPS)
-#-------------------------------
+
 br_model <- brmultinom(Mutation ~ BAPS, data = df, type = "AS_mean")  # Alternative: type = "correction"
 
 # Get coefficients and SEs
@@ -651,9 +651,8 @@ for (level in rownames(coefs)) {
   brglm_results <- rbind(brglm_results, temp)
 }
 
-#---------------------------------------
-# 2. Chi-square test: BAPS group vs each mutation
-#---------------------------------------
+
+#Chi-square test: BAPS group vs each mutation
 
 chi_mutation_results <- data.frame()
 
@@ -692,15 +691,15 @@ for (mutation in levels(df$Mutation)[levels(df$Mutation) != "WT"]) {
   }
 }
 
-#-------------------------------
 # 3. Combine results
-#-------------------------------
+
 combined_results <- bind_rows(
   brglm_results %>% mutate(BAPS_group = gsub("BAPS", "", Variable)),
   chi_mutation_results
 )
 
-#-------------------------------
-# 4. Export to CSV
-#-------------------------------
+
+#  Export/Save to CSV
+
 write.csv(combined_results, "combined_flu_mutation_results_brglm2.csv", row.names = FALSE)
+```

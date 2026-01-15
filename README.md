@@ -602,7 +602,7 @@ write.csv(combined_results, "combined_results_BAPS_vs_sex.csv", row.names = FALS
 ### 2. Bias-reduced multinomial logistic regression 
 To assess genotypic antimicroibal susceptibility  mutations and their association with BAPS groups assignments a bias-reduced multinomial logistc regression model was applied using penialised likelihood estimation (typically based on Firth's correction/Jeffreys prior) to  calculate the odds ratios using nnet package (v7.3.20). This was applied  to reduce small-sample bias and address separation. 
 
-The following R code was used with [MG_Fluroquinolone_BAP_association_metatdata.csv](files/R-studio_input_files/) as input:
+The following R code was used with [MG_Fluroquinolone_BAP_association_metatdata.csv](files/R-studio_input_files/MG_Fluroquinolone_BAP_association_metatdata.csv) as input:
 
 ```
 library(brglm2)

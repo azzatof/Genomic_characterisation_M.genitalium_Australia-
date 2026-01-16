@@ -1,0 +1,73 @@
+Isolate,Mutation,Outcome,Treatment
+DW172,D87N ,Fail,Fluoroquinolone
+DW281,S83I_ D87N ,Fail,Fluoroquinolone
+DW438,S83I _M95I ,Fail,Fluoroquinolone
+DW167,S83I _M95I ,Fail,Fluoroquinolone
+DW170,S83I _M95I ,Fail,Fluoroquinolone
+DW279,S83I _M95I ,Fail,Fluoroquinolone
+DW346,S83I _M95I ,Fail,Fluoroquinolone
+DW351,S83I _M95I ,Fail,Fluoroquinolone
+DW155,S83I ,Fail,Fluoroquinolone
+DW166,S83I ,Fail,Fluoroquinolone
+DW307,S83I ,Fail,Fluoroquinolone
+DW341,S83I ,Fail,Fluoroquinolone
+DW401,S83I ,Fail,Fluoroquinolone
+DW430,S83I ,Fail,Fluoroquinolone
+DW458,S83I ,Fail,Fluoroquinolone
+DW081 ,WT,Fail,Fluoroquinolone
+DW124 ,WT,Fail,Fluoroquinolone
+DW148 ,WT,Fail,Fluoroquinolone
+DW121 ,S83I ,Fail,Fluoroquinolone
+DW119 ,D87N ,Pass,Fluoroquinolone
+DW077 ,P62S ,Pass,Fluoroquinolone
+DW443,P62S_S83I ,Pass,Fluoroquinolone
+DW359,S83I _M95I ,Pass,Fluoroquinolone
+DW436,S83I _M95I ,Pass,Fluoroquinolone
+DW462,S83I _M95I ,Pass,Fluoroquinolone
+DW085 ,S83I ,Pass,Fluoroquinolone
+DW278,S83I ,Pass,Fluoroquinolone
+DW316,S83I ,Pass,Fluoroquinolone
+DW320,S83I ,Pass,Fluoroquinolone
+DW449,S83I ,Pass,Fluoroquinolone
+DW027,WT,Pass,Fluoroquinolone
+DW043 ,WT,Pass,Fluoroquinolone
+DW047 ,WT,Pass,Fluoroquinolone
+DW055,WT,Pass,Fluoroquinolone
+DW058,WT,Pass,Fluoroquinolone
+DW096,WT,Pass,Fluoroquinolone
+DW100 ,WT,Pass,Fluoroquinolone
+DW123 ,WT,Pass,Fluoroquinolone
+DW128 ,WT,Pass,Fluoroquinolone
+DW129 ,WT,Pass,Fluoroquinolone
+DW131 ,WT,Pass,Fluoroquinolone
+DW140,WT,Pass,Fluoroquinolone
+DW277,WT,Pass,Fluoroquinolone
+DW284,WT,Pass,Fluoroquinolone
+DW292,WT,Pass,Fluoroquinolone
+DW293,WT,Pass,Fluoroquinolone
+DW301,WT,Pass,Fluoroquinolone
+DW303,WT,Pass,Fluoroquinolone
+DW310,WT,Pass,Fluoroquinolone
+DW312,WT,Pass,Fluoroquinolone
+DW325,WT,Pass,Fluoroquinolone
+DW347,WT,Pass,Fluoroquinolone
+DW349,WT,Pass,Fluoroquinolone
+DW356,WT,Pass,Fluoroquinolone
+DW360,WT,Pass,Fluoroquinolone
+DW369,WT,Pass,Fluoroquinolone
+DW370,WT,Pass,Fluoroquinolone
+DW380,WT,Pass,Fluoroquinolone
+DW381,WT,Pass,Fluoroquinolone
+DW382,WT,Pass,Fluoroquinolone
+DW414,WT,Pass,Fluoroquinolone
+DW415,WT,Pass,Fluoroquinolone
+DW448,WT,Pass,Fluoroquinolone
+DW454,WT,Pass,Fluoroquinolone
+DW013 ,P62S ,Unknown,Fluoroquinolone
+DW079,P62S ,Unknown,Fluoroquinolone
+DW050,WT,Unknown,Fluoroquinolone
+DW098 ,WT,Unknown,Fluoroquinolone
+DW112,WT,Unknown,Fluoroquinolone
+DW276,WT,Unknown,Fluoroquinolone
+DW395,WT,Unknown,Fluoroquinolone
+DW439,WT,Unknown,Fluoroquinolone

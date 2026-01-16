@@ -487,7 +487,7 @@ ggsave("simple.linear.regression_snpvscgmlst_distances.pdf", Linear, width =  21
 Results:
 Linear regression plot comparing pairwise SNP distances to pairwise allelic distances: [simple.linear.regression_snp.scgmlst_distances_final.pdf](results/Stats/simple.linear.regression_snp.scgmlst_distances_final.pdf)
 
-## Multinomial logistic regression
+## Logistic regression
 ### 1. Multinomial logistic regression
 To assess variables associated with BAPS groups assignments a standard multinomial logistic regression model was applied using maximum liklelihood estimation to calculate the odds ratios using nnet package (v7.3.20). The following variables were assessed using individual regression models: sex, sexual risk group,age and macrolide genotypic resistance mutations.
 
@@ -662,7 +662,7 @@ Results
 1. *parC* and *gyrA* (fluoroquinlone)  mutations vs BAP group assignments results: [combined_flu_mutation_results_brglm2.csv](results/Stats/combined_flu_mutation_results_brglm2.csv)
 2. *16S rRNA* mutations (tetracycline) vs BAP group assignment results:[combined_tetra_mutation_results_LRT_OR_CI.csv](results/Stats/combined_tetra_mutation_results_LRT_OR_CI.csv)
 
-### 3.  Logistic Regression 
+### 3. Standard logistic Regression 
 To assess the association between resistance mutations and treatment outcomes a standard logistic regression model was applied. Treatment outcome was grouped binarily as either fail or pass. The analysis was performed individually for the following drug classes: macrolide, fluoroquinlone and tetracycline. 
 
 The following R code was used with [Treatment_outcome_Macrolide_resistance_mutation_data.csv](files/R-studio_input_files/Treatment_outcome_Macrolide_resistance_mutation_data.csv), [Logistic_regression_plot_fluroquinolone_treatment_outcome.csv](files/R-studio_input_files/Logistic_regression_plot_fluroquinolone_treatment_outcome.csv) and [Logisitc_regression_tetracycline_treatment_outcome_data.csv](files/R-studio_input_files/Logisitc_regression_tetracycline_treatment_outcome_data.csv) as input.  Macrolide is shown as an example; for the other variables, the appropriate factor levels were applied.

@@ -489,9 +489,9 @@ Linear regression plot comparing pairwise SNP distances to pairwise allelic dist
 
 ## Multinomial logistic regression
 ### 1. Multinomial logistic regression
-To assess variables associated with BAPS groups assignments a standard multinomial logistic regression model was applied using maximum liklelihood estimation to calculate the odds ratios using nnet package (v7.3.20). The following variables were assessed using individual regression models: sex, sexual risk group, and age.
+To assess variables associated with BAPS groups assignments a standard multinomial logistic regression model was applied using maximum liklelihood estimation to calculate the odds ratios using nnet package (v7.3.20). The following variables were assessed using individual regression models: sex, sexual risk group,age and macrolide genotypic resistance mutations.
 
-The following R code was used with [meta_data_for_regression_analysis_deomgraphic.csv](files/R-studio_input_files/meta_data_for_regression_analysis_deomgraphic.csv) as input. Sex is shown as an example; for the other variables, the appropriate factor levels were applied.
+The following R code was used with [meta_data_for_regression_analysis_deomgraphic.csv](files/R-studio_input_files/meta_data_for_regression_analysis_deomgraphic.csv)or  as input. Sex is shown as an example; for the other variables, the appropriate factor levels were applied.
 
 ```
 library(nnet)
@@ -550,7 +550,7 @@ write.csv(
 Results
 1. Sex vs BAPS multinomial logistic regression results: [Multinomial_BAPS_vs_Sex_ORs_with_p.csv](results/Stats/Multinomial_BAPS_vs_Sex_ORs_with_p.csv)
 2. Sexual risk factor vs BAPS multinomial logistic regression results:[Multinomial_SexualRisk_ORs_with_p.csv](results/Stats/Multinomial_SexualRisk_ORs_with_p.csv)
-3. 3. Age vs BAPS multinomial logistic regression results:[Multinomial_Age_ORs_with_p.csv](results/Stats/Multinomial_Age_ORs_with_p.csv)
+3. Age vs BAPS multinomial logistic regression results:[Multinomial_Age_ORs_with_p.csv](results/Stats/Multinomial_Age_ORs_with_p.csv)
 
 ### 2. Bias-reduced multinomial logistic regression 
 To assess genotypic antimicroibal susceptibility  mutations and their association with BAPS groups assignments a bias-reduced multinomial logistc regression model was applied using penialised likelihood estimation (typically based on Firth's correction/Jeffreys prior) to  calculate the odds ratios using nnet package (v7.3.20). This was applied  to reduce small-sample bias and address separation. 

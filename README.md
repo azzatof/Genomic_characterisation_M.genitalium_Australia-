@@ -548,7 +548,7 @@ write.csv(
 )
 ```
 Results
-1. Sex vs BAPS multinomial logistic regression results: [combined_results_BAPS_vs_sex.csv](results/Stats/combined_results_BAPS_vs_sex.csv)
+1. Sex vs BAPS multinomial logistic regression results: [Multinomial_BAPS_vs_Sex_ORs_with_p.csv](results/Stats/Multinomial_BAPS_vs_Sex_ORs_with_p.csv)
 2. Sexual risk factor vs BAPS multinomial logistic regression results:
 3. Age vs BAPS multinomial logistic regression results:
 

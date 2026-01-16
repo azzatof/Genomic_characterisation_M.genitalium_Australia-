@@ -1,0 +1,47 @@
+```
+library(ggplot2)
+library(ggtree)
+
+
+# Load data
+data <- read.csv("root_to_tip_data.csv")
+
+# Fit linear model
+model <- lm(distance ~ date, data = data)
+summary_model <- summary(model)
+
+# Extract statistics
+slope <- coef(model)[2]
+intercept <- coef(model)[1]
+r_squared <- summary_model$r.squared
+r <- sign(slope) * sqrt(r_squared)  # Signed correlation coefficient
+tmrca <- -intercept / slope
+timespan <- range(data$date)
+
+# Create regression equation text
+reg_eq <- paste0("y = ", round(slope, 5), "x + ", round(intercept, 5))
+
+# Plot with annotations
+p <- ggplot(data, aes(x = date, y = distance)) +
+  geom_point(color = "#d73027", alpha =0.5, size= 2.5) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue1") +
+  labs(x = "Year",
+       y = "Root to tip distance") +
+  annotate("text", x = min(data$date), y = max(data$distance),
+           label = paste0("Slope: ", round(slope, 5),
+                          "\nR²: ", round(r_squared, 3),
+                          "\nCorrelation Coefficient: ", round(r, 3),
+                          "\nTMRCA: ", round(tmrca, 1),
+                          "\nTimespan: ", paste(timespan, collapse = "–"),
+                          "\n", reg_eq),
+           hjust = 0, vjust = 1, size = 4) +
+  theme_classic()
+
+# Print the plot
+print(p)
+
+
+# Save the plot (optional)
+ggsave("MG_root_to_tip_regression_combined.png", p,  width = 7, height = 5, dpi = 300)
+ggsave("MG_root_to_tip_regression.combined.pdf", Combined_plot, width =  210, height = 297, units = "mm", device = "pdf")
+```

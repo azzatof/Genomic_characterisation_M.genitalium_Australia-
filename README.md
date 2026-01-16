@@ -455,7 +455,7 @@ write.csv(all_ari_scores, file.path(output_dir, "ari_scores.csv"), row.names = F
 Results: 
 Distribution of ARI scores for subsampling fractions: [ARI_subsampling_fractions_results.csv](results/Stats/ARI_subsampling_fractions_results.csv)
 
-### Linear Regression 
+## Linear Regression 
 To assess the relationship between pairwise SNP distances and pairwise allelic distances we applied linear regression model.
 
 The following r-code was used with [cgmlst_dist_melt_final.csv](files/R-studio_input_files/cgmlst_dist_melt_final.csv)
@@ -661,3 +661,97 @@ Results
 
 1. *parC* and *gyrA* (fluoroquinlone)  mutations vs BAP group assignments results: [combined_flu_mutation_results_brglm2.csv](results/Stats/combined_flu_mutation_results_brglm2.csv)
 2. *16S rRNA* mutations (tetracycline) vs BAP group assignment results:[combined_tetra_mutation_results_LRT_OR_CI.csv](results/Stats/combined_tetra_mutation_results_LRT_OR_CI.csv)
+
+### 3.  Logistic Regression 
+To assess the association between resistance mutations and treatment outcomes a standard logistic regression model was applied. Treatment outcome was grouped binarily as either fail or pass. The analysis was performed individually for the following drug classes: macrolide, fluoroquinlone and tetracycline. 
+
+The following R code was used with [](files/R-studio_input_files/MG_Fluroquinolone_BAP_association_metatdata.csv) and [meta_data_for_tetracycline_regression.csv](R-studio_input_files/meta_data_for_tetracycline_regression.csv) as input.  Fluoroquinolone is shown as an example; for the other variables, the appropriate factor levels were applied.
+
+```
+#--------------------------------
+# Load necessary packages
+#--------------------------------
+library(dplyr)
+setwd("~/Desktop/tree_analysis/MG_AMR_graphs/Meta_data_distribution")
+
+#--------------------------------
+# 0. Read and prepare data
+#--------------------------------
+df <- read.csv("Treatment_outcome_Macrolide_resistance_mutation_data.csv")
+df
+df$Outcome  <- factor(df$Outcome , levels = c("Pass", "Fail"))  # Pass = reference
+df$Mutation <- relevel(factor(df$Mutation), ref = "WT")         # WT = reference
+
+#--------------------------------
+# 1. Logistic Regression (Outcome ~ Mutation)
+#--------------------------------
+logit_model <- glm(Outcome ~ Mutation, data = df, family = binomial)
+
+# Get ORs and 95% CIs
+ORs <- exp(coef(logit_model))
+CIs <- exp(confint(logit_model))
+p_vals <- summary(logit_model)$coefficients[, "Pr(>|z|)"]
+
+# Create results table for logistic regression
+logit_results <- data.frame(
+  Mutation_group = names(ORs),
+  Method = "Logistic Regression",
+  p_value = round(p_vals, 4),
+  Pass_in_group = NA,
+  Fail_in_group = NA,
+  Pass_in_others = NA,
+  Fail_in_others = NA,
+  OR = round(ORs, 2),
+  CI_lower = round(CIs[, 1], 2),
+  CI_upper = round(CIs[, 2], 2)
+)
+
+#--------------------------------
+# 2. Likelihood Ratio Test per Mutation group vs others
+#--------------------------------
+likelihood_ratio_summary <- data.frame()
+
+for (group in levels(df$Mutation)) {
+  df_subset <- df %>%
+    mutate(Group_vs_Others = ifelse(Mutation == group, group, "Other"))
+  
+  tab <- table(df_subset$Group_vs_Others, df_subset$Outcome)
+  
+  # Check if both outcome levels are present in both groups
+  if (all(dim(tab) == c(2, 2))) {
+    full_model <- glm(Outcome ~ Group_vs_Others, data = df_subset, family = binomial)
+    reduced_model <- glm(Outcome ~ 1, data = df_subset, family = binomial)
+    
+    test <- anova(reduced_model, full_model, test = "LRT")
+    
+    OR <- exp(coef(full_model)[2])
+    CI <- exp(confint(full_model)[2, ])
+    p_val <- round(test$`Pr(>Chi)`[2], 4)
+    
+    likelihood_ratio_summary <- rbind(likelihood_ratio_summary, data.frame(
+      BAPS_group = group,
+      Method = "Likelihood Ratio Test",
+      p_value = p_val,
+      Pass_in_group = tab[group, "Pass"],
+      Fail_in_group = tab[group, "Fail"],
+      Pass_in_others = tab["Other", "Pass"],
+      Fail_in_others = tab["Other", "Fail"],
+      OR = round(OR, 2),
+      CI_lower = round(CI[1], 2),
+      CI_upper = round(CI[2], 2)
+    ))
+  } else {
+    cat(sprintf("Skipping Mutation group %s due to insufficient Outcome diversity\n", group))
+  }
+}
+
+#--------------------------------
+# 3. Combine both results into one data frame
+#--------------------------------
+combined_results <- bind_rows(logit_results, likelihood_ratio_summary)
+
+#--------------------------------
+# 4. Export results to CSV
+#--------------------------------
+write.csv(combined_results, "Macrolide_treatment_outcome_LRT2.csv", row.names = FALSE)
+```

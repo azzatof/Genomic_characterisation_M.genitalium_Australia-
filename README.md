@@ -556,7 +556,7 @@ Results
 To assess genotypic susceptibility mutations and their association with BAPS groups assignments, a bias-reduced multinomial logistc regression model was applied using penialised likelihood estimation (typically based on Firth's correction/Jeffreys prior) to  calculate the odds ratios using nnet package (v7.3.20). This was applied  to reduce small-sample bias and address separation. 
 The following variables were assessed using individual  bias-reduced multinomial logsitc regression models: Fluoroquinolone and Tetracycline genotypic susceptibiltiy mutations.
 
-The following R code was used with [MG_Fluroquinolone_BAP_association_metatdata.csv](files/R-studio_input_files/MG_Fluroquinolone_BAP_association_metatdata.csv) and as input.
+The following R code was used with [MG_Fluroquinolone_BAP_association_metatdata.csv](files/R-studio_input_files/MG_Fluroquinolone_BAP_association_metatdata.csv) and [meta_data_for_tetracycline_regression.csv](R-studio_input_files/meta_data_for_tetracycline_regression.csv) as input.  Fluoroquinolone is shown as an example; for the other variables, the appropriate factor levels were applied.
 
 ```
 library(brglm2)
@@ -659,4 +659,4 @@ write.csv(combined_results, "combined_flu_mutation_results_brglm2.csv", row.name
 ```
 Results
 
-Result output from R code: [combined_flu_mutation_results_brglm2.csv](results/Stats/combined_flu_mutation_results_brglm2.csv)
+1. Fluoroquinlone susceptibility mutations vs BAP group assignments results: [combined_flu_mutation_results_brglm2.csv](results/Stats/combined_flu_mutation_results_brglm2.csv)

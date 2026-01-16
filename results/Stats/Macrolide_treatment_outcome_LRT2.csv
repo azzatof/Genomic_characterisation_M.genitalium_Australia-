@@ -1,0 +1,7 @@
+Mutation_group,Method,p_value,OR,CI_lower,CI_upper
+(Intercept),Logistic Regression,NA,0,NA,3.44E+204
+MutationA2071G,Logistic Regression,NA,1,0,NA
+MutationA2072G,Logistic Regression,NA,2322868164,0,NA
+(Intercept),Likelihood Ratio Test,0.0481,0,NA,Inf
+MutationA2071G,Likelihood Ratio Test,0.7315,7228049.9,0,NA
+MutationA2072G,Likelihood Ratio Test,0.0261,0,NA,Inf

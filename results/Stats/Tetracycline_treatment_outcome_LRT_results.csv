@@ -1,0 +1,11 @@
+Mutation_group,Method,p_value,OR,CI_lower,CI_upper
+(Intercept),Logistic Regression,NA,2,0.19,43.04
+MutationA742G,Logistic Regression,NA,1,0.02,40.4
+MutationC1435T,Logistic Regression,NA,0.38,0.01,5.92
+MutationC1435T_dual,Logistic Regression,NA,0.5,0.01,23.55
+MutationC462T,Logistic Regression,NA,0,NA,5.18146266885988e+142
+(Intercept),Likelihood Ratio Test,0.4512,,,
+MutationA742G,Likelihood Ratio Test,0.4512,,,
+MutationC1435T,Likelihood Ratio Test,0.7713,,,
+MutationC1435T_dual,Likelihood Ratio Test,0.9294,,,
+MutationC462T,Likelihood Ratio Test,0.0954,,,

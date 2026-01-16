@@ -1,0 +1,15 @@
+BAPS_group,Method,p_value,OR,CI_lower,CI_upper
+(Intercept),Logistic Regression,NA,0.09,0.02,0.25
+MutationD87N ,Logistic Regression,NA,11.33,0.38,344.37
+MutationP62S ,Logistic Regression,NA,0,NA,Inf
+MutationP62S_S83I ,Logistic Regression,NA,0,NA,Inf
+MutationS83I ,Logistic Regression,NA,18.13,3.93,108.37
+MutationS83I _M95I ,Logistic Regression,NA,22.67,4.08,168.4
+MutationS83I_ D87N ,Logistic Regression,NA,482174540.1,0,NA
+WT,Likelihood Ratio Test,0,,,
+D87N ,Likelihood Ratio Test,0.5411,,,
+P62S ,Likelihood Ratio Test,0.3991,,,
+P62S_S83I ,Likelihood Ratio Test,0.3991,,,
+S83I ,Likelihood Ratio Test,0.0067,,,
+S83I _M95I ,Likelihood Ratio Test,0.0125,,,
+S83I_ D87N ,Likelihood Ratio Test,0.1163,,,

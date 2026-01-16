@@ -753,4 +753,6 @@ combined_results <- bind_rows(logit_results, likelihood_ratio_summary)
 write.csv(combined_results, "Macrolide_treatment_outcome_LRT2.csv", row.names = FALSE)
 ```
 Results
-1. Macrolide mutations vs treatment outcome results:
+1. Macrolide mutations vs treatment outcome results:[Macrolide_treatment_outcome_LRT2.csv](results/Stats/Macrolide_treatment_outcome_LRT2.csv)
+2. Fluoroquinlone mutations vs treatment outcome results: [Fluoroquinlone_treatment_outcome_LRT_results.csv](results/Stats/Fluoroquinlone_treatment_outcome_LRT_results.csv)
+3. Tetracycline mutations vs treatment outcome results: [Tetracycline_treatment_outcome_LRT_results.csv](results/Stats/Tetracycline_treatment_outcome_LRT_results.csv)

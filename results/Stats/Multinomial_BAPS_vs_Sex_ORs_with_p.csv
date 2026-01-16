@@ -1,0 +1,6 @@
+"BAPS_group","Method","OR","CI_lower","CI_upper","p_value","F_in_group","M_in_group","F_in_others","M_in_others","Mean_Prob_M_Group","Mean_Prob_M_Others"
+"2","Multinomial Regression",2.24,0.34,14.61,0.4006,NA,NA,NA,NA,NA,NA
+"3","Multinomial Regression",9874.12,0,8.59554519248683e+52,0.8729,NA,NA,NA,NA,NA,NA
+"4","Multinomial Regression",0.39,0.1,1.47,0.1638,NA,NA,NA,NA,NA,NA
+"5","Multinomial Regression",0.54,0.13,2.3,0.4052,NA,NA,NA,NA,NA,NA
+"6","Multinomial Regression",7282.2,0,9.88031800195804e+55,0.8845,NA,NA,NA,NA,NA,NA

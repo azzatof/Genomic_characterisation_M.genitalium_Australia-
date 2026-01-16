@@ -665,7 +665,7 @@ Results
 ### 3.  Logistic Regression 
 To assess the association between resistance mutations and treatment outcomes a standard logistic regression model was applied. Treatment outcome was grouped binarily as either fail or pass. The analysis was performed individually for the following drug classes: macrolide, fluoroquinlone and tetracycline. 
 
-The following R code was used with [Treatment_outcome_Macrolide_resistance_mutation_data.csv](files/R-studio_input_files/Treatment_outcome_Macrolide_resistance_mutation_data.csv), [Logistic_regression_plot_fluroquinolone_treatment_outcome.csv](files/R-studio_input_files/Logistic_regression_plot_fluroquinolone_treatment_outcome.csv) and [Logisitc_regression_tetracycline_treatment_outcome_data.csv](files/R-studio_input_files/Logsitc_regression_tetracycline_treatment_outcome_data.csv]) as input.  Macrolide is shown as an example; for the other variables, the appropriate factor levels were applied.
+The following R code was used with [Treatment_outcome_Macrolide_resistance_mutation_data.csv](files/R-studio_input_files/Treatment_outcome_Macrolide_resistance_mutation_data.csv), [Logistic_regression_plot_fluroquinolone_treatment_outcome.csv](files/R-studio_input_files/Logistic_regression_plot_fluroquinolone_treatment_outcome.csv) and [Logisitc_regression_tetracycline_treatment_outcome_data.csv](files/R-studio_input_files/Logisitc_regression_tetracycline_treatment_outcome_data.csv) as input.  Macrolide is shown as an example; for the other variables, the appropriate factor levels were applied.
 
 ```
 

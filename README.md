@@ -494,43 +494,43 @@ To assess variables associated with BAPS groups assignments a standard multinomi
 The following R code was used with [meta_data_for_regression_analysis_deomgraphic.csv](files/R-studio_input_files/meta_data_for_regression_analysis_deomgraphic.csv) as input. Sex is shown as an example; for the other variables, the appropriate factor levels were applied.
 
 ```
-
-# Load necessary packages
-
-library(dplyr)
-library(nnet)  # For multinomial regression
+library(nnet)
 
 
-#Read and prepare data
+# Read and prepare data
+
 df <- read.csv("meta_data_for_regression_analysis_deomgraphic.csv")
 
 # Ensure correct factor levels
-df$Sex <- factor(df$Sex, levels = c("F", "M"))  # Reference: Other
-df$BAPS <- factor(df$BAPS)  # Should be character/factor already
+df$Sex <- factor(df$Sex, levels = c("F", "M"))  # Reference: F
+df$BAPS <- factor(df$BAPS)
 
-# Multinomial Regression (BAPS ~ Sexual risk)
-# Relevel BAPS to set first group as reference
-df$BAPS <- relevel(df$BAPS, ref = levels(df$BAPS)[1])  # Default to first BAPS group
+# Multinomial Regression (BAPS ~ Sex)
 
-# Multinomial logistic regression
+df$BAPS <- relevel(df$BAPS, ref = levels(df$BAPS)[1])
+
 multi_model <- multinom(BAPS ~ Sex, data = df)
 multi_summary <- summary(multi_model)
 
-# Calculate ORs and 95% CIs
-multi_ORs <- exp(coef(multi_model))
-multi_SE <- multi_summary$standard.errors
-z_val <- 1.96
-multi_CI_lower <- exp(coef(multi_model) - z_val * multi_SE)
-multi_CI_upper <- exp(coef(multi_model) + z_val * multi_SE)
+# Extract ORs, CIs, and p-values
 
-# Create tidy data frame
+coef_mat <- coef(multi_model)
+se_mat   <- multi_summary$standard.errors
+z_val <- 1.96
+
+# Wald z-statistics and p-values
+z_stats <- coef_mat[, "SexM"] / se_mat[, "SexM"]
+p_values <- 2 * (1 - pnorm(abs(z_stats)))
+
+# Create tidy results table
+
 multi_results <- data.frame(
-  BAPS_group = rownames(multi_ORs),
+  BAPS_group = rownames(coef_mat),
   Method = "Multinomial Regression",
-  OR = round(exp(coef(multi_model)[, "SexM"]), 2),
-  CI_lower = round(exp(coef(multi_model)[, "SexM"] - z_val * multi_SE[, "SexM"]), 2),
-  CI_upper = round(exp(coef(multi_model)[, "SexM"] + z_val * multi_SE[, "SexM"]), 2),
-  p_value = NA,
+  OR = round(exp(coef_mat[, "SexM"]), 2),
+  CI_lower = round(exp(coef_mat[, "SexM"] - z_val * se_mat[, "SexM"]), 2),
+  CI_upper = round(exp(coef_mat[, "SexM"] + z_val * se_mat[, "SexM"]), 2),
+  p_value = round(p_values, 4),
   F_in_group = NA,
   M_in_group = NA,
   F_in_others = NA,
@@ -539,65 +539,13 @@ multi_results <- data.frame(
   Mean_Prob_M_Others = NA
 )
 
-#Likelihood Ratio Test (Each BAPS group vs rest)
+# Save results
 
-likelihood_ratio_summary <- data.frame()
-
-for (group in levels(df$BAPS)) {
-  df_subset <- df %>%
-    mutate(
-      BAPS_group_binary = ifelse(BAPS == group, group, "F")  # Binary grouping
-    )
-  
-  # Contingency table to check data sufficiency
-  tab <- table(df_subset$BAPS_group_binary, df_subset$Sex)
-  
-  if (all(dim(tab) == c(2, 2))) {
-    # Fit models
-    full_model <- glm(Sex ~ BAPS_group_binary, data = df_subset, family = binomial)
-    reduced_model <- glm(Sex ~ 1, data = df_subset, family = binomial)
-    
-    # Likelihood Ratio Test
-    lrt <- anova(reduced_model, full_model, test = "LRT")
-    
-    # Extract OR and 95% CI
-    OR <- exp(coef(full_model)[2])
-    CI <- exp(confint(full_model)[2, ])
-    
-    # Predicted probabilities
-    preds <- predict(full_model, type = "response")
-    mean_prob_group <- mean(preds[df_subset$BAPS_group_binary == group])
-    mean_prob_others <- mean(preds[df_subset$BAPS_group_binary == "Other"])
-    
-    # Save results
-    likelihood_ratio_summary <- rbind(likelihood_ratio_summary, data.frame(
-      BAPS_group = group,
-      Method = "Likelihood Ratio Test",
-      p_value = round(lrt$`Pr(>Chi)`[2], 4),
-      F_in_group = tab[1, "F"],
-      M_in_group = tab[1, "M"],
-      F_in_others = tab[2, "F"],
-      M_in_others = tab[2, "M"],
-      OR = round(OR, 2),
-      CI_lower = round(CI[1], 2),
-      CI_upper = round(CI[2], 2),
-      Mean_Prob_GBMSM_Group = round(mean_prob_group, 3),
-      Mean_Prob_GBMSM_Others = round(mean_prob_others, 3)
-    ))
-  } else {
-    cat(sprintf("Skipping BAPS group %s: Insufficient diversity in Sexual.risk.group\n", group))
-  }
-}
-
-# Combine results
-
-combined_results <- bind_rows(
+write.csv(
   multi_results,
-  likelihood_ratio_summary
+  "Multinomial_BAPS_vs_Sex_ORs_with_p.csv",
+  row.names = FALSE
 )
-
-# Export/Save results
-write.csv(combined_results, "combined_results_BAPS_vs_sex.csv", row.names = FALSE)
 ```
 Results
 1. Sex vs BAPS multinomial logistic regression results: [combined_results_BAPS_vs_sex.csv](results/Stats/combined_results_BAPS_vs_sex.csv)

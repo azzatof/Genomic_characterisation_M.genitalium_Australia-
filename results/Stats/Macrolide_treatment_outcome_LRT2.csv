@@ -1,7 +1,0 @@
-"Mutation_group","Method","p_value","Pass_in_group","Fail_in_group","Pass_in_others","Fail_in_others","OR","CI_lower","CI_upper","BAPS_group"
-"(Intercept)","Logistic Regression",0.9977,NA,NA,NA,NA,0,NA,3.4410546724401e+204,NA
-"MutationA2071G","Logistic Regression",1,NA,NA,NA,NA,1,0,NA,NA
-"MutationA2072G","Logistic Regression",0.9977,NA,NA,NA,NA,2322868164.08,0,NA,NA
-NA,"Likelihood Ratio Test",0.0481,15,0,2,1,0,NA,Inf,"WT"
-NA,"Likelihood Ratio Test",0.7315,1,0,16,1,7228049.9,0,NA,"A2071G"
-NA,"Likelihood Ratio Test",0.0261,1,1,16,0,0,NA,Inf,"A2072G"

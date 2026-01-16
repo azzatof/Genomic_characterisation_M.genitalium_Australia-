@@ -549,8 +549,8 @@ write.csv(
 ```
 Results
 1. Sex vs BAPS multinomial logistic regression results: [Multinomial_BAPS_vs_Sex_ORs_with_p.csv](results/Stats/Multinomial_BAPS_vs_Sex_ORs_with_p.csv)
-2. Sexual risk factor vs BAPS multinomial logistic regression results:
-3. Age vs BAPS multinomial logistic regression results:
+2. Sexual risk factor vs BAPS multinomial logistic regression results:[Multinomial_SexualRisk_ORs_with_p.csv](results/Stats/Multinomial_SexualRisk_ORs_with_p.csv)
+3. 3. Age vs BAPS multinomial logistic regression results:
 
 ### 2. Bias-reduced multinomial logistic regression 
 To assess genotypic antimicroibal susceptibility  mutations and their association with BAPS groups assignments a bias-reduced multinomial logistc regression model was applied using penialised likelihood estimation (typically based on Firth's correction/Jeffreys prior) to  calculate the odds ratios using nnet package (v7.3.20). This was applied  to reduce small-sample bias and address separation. 

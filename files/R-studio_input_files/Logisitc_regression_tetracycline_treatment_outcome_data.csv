@@ -1,0 +1,22 @@
+Isolate,Mutation,Outcome,Treatment
+DW133,A742G,Pass,Streptogramin/tetracycline
+DW285,A742G,Unknown,Streptogramin/tetracycline
+DW329,C1435T_dual,Pass,Streptogramin/tetracycline
+DW108,C1435T,Pass,Streptogramin/tetracycline
+DW141,C1435T,Pass,Streptogramin/tetracycline
+DW041 ,C1435T_dual,Fail,Streptogramin/tetracycline
+DW039 ,WT,Fail,Streptogramin/tetracycline
+DW354,A742G,Fail,Tetracyclines
+DW033 ,A742G,Fail,Tetracyclines
+DW355,C1435T,Fail,Tetracyclines
+DW398,C1435T,Fail,Tetracyclines
+DW456,C1435T,Fail,Tetracyclines
+DW353,C1435T,Pass,Tetracyclines
+DW440,C1435T,Pass,Tetracyclines
+DW318,C1435T,Unknown,Tetracyclines
+DW410,C1435T,Unknown,Tetracyclines
+DW283,C462T,Pass,Tetracyclines
+DW361,C462T,Pass,Tetracyclines
+DW388,WT,Fail,Tetracyclines
+DW432,WT,Pass,Tetracyclines
+DW435,WT,Unknown,Tetracyclines

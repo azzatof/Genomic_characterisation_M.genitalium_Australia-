@@ -489,9 +489,9 @@ Linear regression plot comparing pairwise SNP distances to pairwise allelic dist
 
 ## Multinomial logistic regression
 ### 1. Multinomial logistic regression
-To assess variables associated with BAPS groups assignments a standard multinomial logistic regression model was applied using maximum liklelihood estimation calculate the odds ratios using nnet package (v7.3.20). The following characteristics were included in the model sex, sexual risk group and Age.
+To assess variables associated with BAPS groups assignments a standard multinomial logistic regression model was applied using maximum liklelihood estimation to calculate the odds ratios using nnet package (v7.3.20). The following variables were assessed using individual regression models: sex, sexual risk group, and age.
 
-The following R code was used with [meta_data_for_regression_analysis_deomgraphic.csv](files/R-studio_input_files/meta_data_for_regression_analysis_deomgraphic.csv) as input:
+The following R code was used with [meta_data_for_regression_analysis_deomgraphic.csv](files/R-studio_input_files/meta_data_for_regression_analysis_deomgraphic.csv) as input. Sex is shown as an example; for the other variables, the appropriate factor levels were applied.
 
 ```
 
@@ -600,7 +600,9 @@ combined_results <- bind_rows(
 write.csv(combined_results, "combined_results_BAPS_vs_sex.csv", row.names = FALSE)
 ```
 Results
-1. Sex vs BAPS multimomial logistic regression results: [combined_results_BAPS_vs_sex.csv](results/Stats/combined_results_BAPS_vs_sex.csv)
+1. Sex vs BAPS multinomial logistic regression results: [combined_results_BAPS_vs_sex.csv](results/Stats/combined_results_BAPS_vs_sex.csv)
+2. Sexual risk factor vs BAPS multinomial logistic regression results:
+3. Age vs BAPS multinomial logistic regression results:
 
 ### 2. Bias-reduced multinomial logistic regression 
 To assess genotypic antimicroibal susceptibility  mutations and their association with BAPS groups assignments a bias-reduced multinomial logistc regression model was applied using penialised likelihood estimation (typically based on Firth's correction/Jeffreys prior) to  calculate the odds ratios using nnet package (v7.3.20). This was applied  to reduce small-sample bias and address separation. 

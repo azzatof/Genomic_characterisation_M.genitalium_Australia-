@@ -1,0 +1,6 @@
+BAPS_group,Method,OR,CI_lower,CI_upper,p_value
+2,Multinomial Regression,8.26,1.33,51.38,0.0235
+3,Multinomial Regression,31587.6,0,5.60596999146412e+38,0.7968
+4,Multinomial Regression,0.55,0.16,1.91,0.3464
+5,Multinomial Regression,0.9,0.24,3.38,0.8771
+6,Multinomial Regression,7.52,0.69,81.6,0.0972

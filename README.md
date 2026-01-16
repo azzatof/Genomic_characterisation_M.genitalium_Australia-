@@ -665,26 +665,24 @@ Results
 ### 3.  Logistic Regression 
 To assess the association between resistance mutations and treatment outcomes a standard logistic regression model was applied. Treatment outcome was grouped binarily as either fail or pass. The analysis was performed individually for the following drug classes: macrolide, fluoroquinlone and tetracycline. 
 
-The following R code was used with [MG_Fluroquinolone_BAP_association_metatdata.csv](files/R-studio_input_files/MG_Fluroquinolone_BAP_association_metatdata.csv) and [meta_data_for_tetracycline_regression.csv](R-studio_input_files/meta_data_for_tetracycline_regression.csv) as input.  Fluoroquinolone is shown as an example; for the other variables, the appropriate factor levels were applied.
+The following R code was used with [Treatment_outcome_Macrolide_resistance_mutation_data.csv](files/R-studio_input_files/Treatment_outcome_Macrolide_resistance_mutation_data.csv), [Logistic_regression_plot_fluroquinolone_treatment_outcome.csv](R-studio_input_files/Logistic_regression_plot_fluroquinolone_treatment_outcome.csv) and [Logistic_regression_tetracycline_treatment_outcome_data.csv](R-studio_input_files/Logistic_regression_plot_fluroquinolone_treatment_outcome.csv) as input.  Macrolide is shown as an example; for the other variables, the appropriate factor levels were applied.
 
 ```
-#--------------------------------
-# Load necessary packages
-#--------------------------------
-library(dplyr)
-setwd("~/Desktop/tree_analysis/MG_AMR_graphs/Meta_data_distribution")
 
-#--------------------------------
-# 0. Read and prepare data
-#--------------------------------
+# Load necessary packages
+
+library(dplyr)
+
+# Read and prepare data
+
 df <- read.csv("Treatment_outcome_Macrolide_resistance_mutation_data.csv")
 df
 df$Outcome  <- factor(df$Outcome , levels = c("Pass", "Fail"))  # Pass = reference
 df$Mutation <- relevel(factor(df$Mutation), ref = "WT")         # WT = reference
 
-#--------------------------------
-# 1. Logistic Regression (Outcome ~ Mutation)
-#--------------------------------
+
+# Logistic Regression (Outcome ~ Mutation)
+
 logit_model <- glm(Outcome ~ Mutation, data = df, family = binomial)
 
 # Get ORs and 95% CIs
@@ -706,9 +704,8 @@ logit_results <- data.frame(
   CI_upper = round(CIs[, 2], 2)
 )
 
-#--------------------------------
-# 2. Likelihood Ratio Test per Mutation group vs others
-#--------------------------------
+# Likelihood Ratio Test per Mutation group vs others
+
 likelihood_ratio_summary <- data.frame()
 
 for (group in levels(df$Mutation)) {
@@ -745,13 +742,15 @@ for (group in levels(df$Mutation)) {
   }
 }
 
-#--------------------------------
-# 3. Combine both results into one data frame
-#--------------------------------
+
+# Combine both results into one data frame
+
 combined_results <- bind_rows(logit_results, likelihood_ratio_summary)
 
-#--------------------------------
-# 4. Export results to CSV
-#--------------------------------
+
+# Export results to CSV
+
 write.csv(combined_results, "Macrolide_treatment_outcome_LRT2.csv", row.names = FALSE)
 ```
+Results
+1. Macrolide mutations vs treatment outcome results:

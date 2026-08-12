@@ -176,54 +176,6 @@ Results:
 
 - [BAPS result table](results/hierbaps_partition.csv)
 
-## Ancestral reconstruction
-To assess the evolutionary trajectory of *M.genitalium* ancestral character state reconstruction was performed using ape (v4.3.3) in R under the equal rates model.  The maximum likelihood tree was used as input.
-
-The following R code was used
-```
-library(ape)  # use for reading tree
-library(phytools)  # use for ASR
-library(tidyverse)  # data manipulation
-library(ggplot2)  # plotting
-library(ggtree)  # tree plotting
-
-
-# Read in the tree file
-tree <- read.tree("Alignment.positional.filtered_polymorphic_sites_95.fasta_midpoint.nwk")
-
-# Load metadata
-traits <- read.csv("meta_data_for_rectangular_tree.csv", strip.white = TRUE, header = TRUE) %>%
-  select(Isolate, BAPS) %>%
-  rename(tips = Isolate, lineage = BAPS)
-
-# Set names as tip labels
-trait_vector <- setNames(traits$lineage, traits$tip)
-
-# This should return TRUE if all tip names in the vector match those in the tree
-all(tree$tip.label %in% names(trait_vector))
-
-# Run ancestral state (default model= ER)
-asr_result <- ace(trait_vector, tree, type = "discrete")
-
-# View likelihood of each BAP being that "state" for each node
-head(asr_result$lik.anc)
-
-# Make that a dataframe
-asr_df <- as.data.frame(asr_result$lik.anc)
-asr_df$node <- as.numeric(rownames(asr_df))
-rownames(asr_df) <- NULL
-
-# Reshape to long format
-df_long <- asr_df %>%
-  pivot_longer(cols = starts_with("BAPS"),
-               names_to = "BAPS_group",
-               values_to = "likelihood")
-
-# For each node, select the BAPS group with the highest likelihood
-df_max <- df_long %>%
-  group_by(node) %>%
-  slice_max(likelihood, with_ties = FALSE) %>%
-  ungroup()
 ```
 ## cgMLST
 ### 1. Create Schema
